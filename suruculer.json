@@ -1,0 +1,68 @@
+{
+    "suruculer": [
+        {
+            "Id": 1,
+            "ad": "Ali",
+            "soyad": "Yılmaz",
+            "arac": "Toyota Corolla",
+            "plaka": "34ABC123",
+            "resim": "resimler/surucu/ali.jpg"
+        },
+        {
+            "Id": 2,
+            "ad": "Ayşe",
+            "soyad": "Demir",
+            "resim": "resimler/surucu/kadin.jpg",
+            "arac": "Honda Civic",
+            "plaka": "34DEF456"
+        },
+        {
+            "Id": 3,
+            "ad": "Mehmet",
+            "soyad": "Kara",
+            "arac": "Ford Focus",
+            "plaka": "34GHI789",
+            "resim": "resimler/surucu/erkek.jpg"
+        },
+        {
+            "Id": 4,
+            "ad": "Fatma",
+            "soyad": "Çelik",
+            "arac": "Volkswagen Passat",
+            "plaka": "34JKL012",
+            "resim": "resimler/surucu/kadin.jpg"
+        },
+        {
+            "Id": 5,
+            "ad": "Mustafa",
+            "soyad": "Öztürk",
+            "arac": "Renault Clio",
+            "plaka": "34MNO345",
+            "resim": "resimler/surucu/erkekkk.jpg"
+        },
+        {
+            "Id": 6,
+            "ad": "Elif",
+            "soyad": "Koç",
+            "arac": "BMW 3 Series",
+            "plaka": "34PQR678",
+            "resim": "resimler/surucu/kadınn.jpg"
+        },
+        {
+            "Id": 7,
+            "ad": "Ahmet",
+            "soyad": "Yurt",
+            "arac": "Mercedes-Benz C-Class",
+            "plaka": "34STU901",
+            "resim": "resimler/surucu/Tunç.jpg"
+        },
+        {
+            "Id": 8,
+            "ad": "Zeynep",
+            "soyad": "Aydın",
+            "arac": "Audi A4",
+            "plaka": "34VWX234",
+            "resim": "resimler/surucu/zeynep.jpg"
+        }
+    ]
+}

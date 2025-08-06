@@ -1,0 +1,28 @@
+{
+    "kisiler": [
+        {
+            "isim": "Ali",
+            "soyisim": "Yılmaz",
+            "sifre": "123456",
+            "resim": "resimler/ali.jpeg"
+        },
+        {
+            "isim": "Ahmet",
+            "soyisim": "Demir",
+            "sifre": "123456",
+            "resim": "resimler/ahmet.jpg"
+        },
+        {
+            "isim": "Mehmet",
+            "soyisim": "Kara",
+            "sifre": "123456",
+            "resim": "resimler/mehmet.jpeg"
+        },
+        {
+            "isim": "Mustafa",
+            "soyisim": "Çelik",
+            "sifre": "123456",
+            "resim": "resimler/mustafa.jpg"
+        }
+    ]
+}
