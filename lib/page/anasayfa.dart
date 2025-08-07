@@ -228,7 +228,7 @@ class _AnasayfaState extends State<Anasayfa> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.flash_on),
-              label: 'Hızlı Erişim',
+              label: 'Yakınımdakiler',
             ),
           ],
         ),

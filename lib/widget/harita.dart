@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +18,8 @@ class _HaritaState extends State<Harita> {
   LatLng? currentPosition;
   bool isLoading = true;
   Set<Marker> _markers = {};
+  StreamSubscription<Position>?
+  _positionStreamSubscription; // Canlı konum dinleyicisi
 
   // Eskişehir Tepebaşı ve Odunpazarı bölgelerindeki hayali taksi konumları
   final List<Map<String, dynamic>> taksiKonumlari = [
@@ -99,9 +103,26 @@ class _HaritaState extends State<Harita> {
     }
   }
 
+  void _startLiveLocationTracking() {
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10, // 10 metre hareket ettiğinde güncelle
+      ),
+    ).listen((Position position) {
+      setState(() {
+        currentPosition = LatLng(position.latitude, position.longitude);
+      });
+
+      // Kamerayı yeni konuma hareket ettir
+      if (mapController != null) {
+        mapController!.animateCamera(CameraUpdate.newLatLng(currentPosition!));
+      }
+    });
+  }
+
   Future<void> _getCurrentLocation() async {
     try {
-      // İzin kontrolü
       LocationPermission permission = await Geolocator.checkPermission();
 
       if (permission == LocationPermission.denied) {
@@ -110,10 +131,16 @@ class _HaritaState extends State<Harita> {
 
       if (permission == LocationPermission.whileInUse ||
           permission == LocationPermission.always) {
-        // Konum al
         Position position = await Geolocator.getCurrentPosition();
 
-        // Haritayı konuma götür
+        setState(() {
+          currentPosition = LatLng(position.latitude, position.longitude);
+          isLoading = false;
+        });
+
+        // Canlı takibi başlat
+        _startLiveLocationTracking();
+
         if (mapController != null) {
           mapController!.animateCamera(
             CameraUpdate.newLatLng(currentPosition!),
@@ -128,6 +155,31 @@ class _HaritaState extends State<Harita> {
     }
   }
 
+  Map<String, dynamic>? surucuGetir(int id, List suruculerJson) {
+    return suruculerJson.firstWhere((s) => s['Id'] == id, orElse: () => null);
+  }
+
+  double mesafeHesapla(LatLng konum1, LatLng konum2) {
+    double mesafeMetre = Geolocator.distanceBetween(
+      konum1.latitude,
+      konum1.longitude,
+      konum2.latitude,
+      konum2.longitude,
+    );
+    return mesafeMetre / 1000; // kilometre cinsinden döndürür
+  }
+
+  List<Map<String, dynamic>> siraliTaksiListesi() {
+    if (currentPosition == null) return [];
+    List<Map<String, dynamic>> taksiler =
+        taksiKonumlari.map((taksi) {
+          final mesafe = mesafeHesapla(currentPosition!, taksi['position']);
+          return {...taksi, 'mesafe': mesafe};
+        }).toList();
+    taksiler.sort((a, b) => a['mesafe'].compareTo(b['mesafe']));
+    return taksiler;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -136,24 +188,43 @@ class _HaritaState extends State<Harita> {
   }
 
   @override
+  void dispose() {
+    _positionStreamSubscription?.cancel(); // Canlı konum dinleyicisini durdur
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 200, // Harita yüksekliği
       width: 380,
-      child: GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          mapController = controller;
-        },
-        initialCameraPosition: CameraPosition(
-          target: LatLng(39.7667, 30.5256), // Eskişehir koordinatları
-          zoom: 13.0, // Şehir içi detayı için zoom artırıldı
-        ),
-        markers: _markers, // Taksi marker'larını ekle
-        myLocationEnabled: false, // Kullanıcı konumu göster
-        myLocationButtonEnabled: false, // Konum butonu göster
-        mapType: MapType.normal, // Harita tipi
-      ),
+      child:
+          isLoading
+              ? Center(
+                child: CircularProgressIndicator(),
+              ) // Konum yüklenirken loading göster
+              : GoogleMap(
+                onMapCreated: (GoogleMapController controller) {
+                  mapController = controller;
+                  // Harita yüklenince gerçek konuma git
+                  if (currentPosition != null) {
+                    mapController!.animateCamera(
+                      CameraUpdate.newLatLng(currentPosition!),
+                    );
+                  }
+                },
+                initialCameraPosition: CameraPosition(
+                  target:
+                      currentPosition ??
+                      LatLng(40.1828, 29.0665), // Bursa koordinatları
+                  zoom: 13.0, // Şehir içi detayı için zoom artırıldı
+                ),
+                markers: _markers, // Taksi marker'larını ekle
+                myLocationEnabled: true, // Kullanıcı konumu göster
+                myLocationButtonEnabled: true, // Konum butonu göster
+                mapType: MapType.normal, // Harita tipi
+              ),
     );
   }
 }
