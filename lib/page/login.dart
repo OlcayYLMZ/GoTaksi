@@ -16,7 +16,7 @@ class _LoginState extends State<Login> {
   var sifre = TextEditingController();
 
   girisKontrol() async {
-    var jsonString = await rootBundle.loadString("kayıtlı_kişiler.json");
+    var jsonString = await rootBundle.loadString("kayitli_kisiler.json");
     var jsonData = json.decode(jsonString);
 
     //kişiler json dosyamızdaki kişileri listeye aldık.

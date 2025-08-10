@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:uber_yeni/page/surucu_detay.dart';
 
 class hizlierisim extends StatefulWidget {
   const hizlierisim({super.key});
@@ -168,6 +169,16 @@ class _hizlierisimState extends State<hizlierisim> {
                   if (surucu == null) return SizedBox();
                   return Card(
                     child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    SurucuDetay(surucuId: taksi['surucuId']),
+                          ),
+                        );
+                      },
                       leading: Image.asset(surucu['resim']),
                       title: Text('${surucu['ad']} ${surucu['soyad']}'),
                       subtitle: Text('${surucu['arac']} - ${surucu['plaka']}'),

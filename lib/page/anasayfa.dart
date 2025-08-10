@@ -1,11 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:uber_yeni/page/aktif_card.dart';
 import 'package:uber_yeni/page/hızlı_erisim.dart';
 import 'package:uber_yeni/page/login.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:uber_yeni/page/qrodeme.dart';
 import 'package:uber_yeni/page/yolculukarim.dart';
+
 import '../widget/harita.dart';
 
 class Anasayfa extends StatefulWidget {
@@ -32,14 +33,15 @@ class _AnasayfaState extends State<Anasayfa> {
   // BottomNavigationBar için gerekli değişkenler
   // Bu değişken, hangi sekmenin seçili olduğunu tutar.
   int currentIndex = 0;
-
-  //slider için resim listesi
+  // sipariş takip için gerekli değişken.
+  bool loading = false;
   List<String> resimler = [
     'resimler/slider/slider1.png',
     'resimler/slider/slider2.jpg',
     'resimler/slider/slider3.png',
     'resimler/slider/slider4.png',
   ];
+  // ...
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +182,8 @@ class _AnasayfaState extends State<Anasayfa> {
               ),
               // HARITA WİDGET'I BURAYA EKLİ
               Harita(),
-              SizedBox(height: 20),
-              //Container eklenecek.
+
+              //Sipariş Takip Ekranı.
             ],
           ),
         ),
@@ -212,7 +214,7 @@ class _AnasayfaState extends State<Anasayfa> {
             } else if (index == 3) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => hizlierisim()),
+                MaterialPageRoute(builder: (context) => (hizlierisim())),
               );
             }
           },

@@ -73,74 +73,107 @@ class _SurucuDetayState extends State<SurucuDetay> {
               : surucuBilgisi == null
               ? Center(child: Text("Sürücü bulunamadı"))
               : Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Sürücü kartı
-                    Card(
-                      elevation: 5,
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "${surucuBilgisi!['resim']}",
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              "${surucuBilgisi!['ad']} ${surucuBilgisi!['soyad']}",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                padding: EdgeInsets.all(50),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Sürücü kartı
+                      Card(
+                        elevation: 5,
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "${surucuBilgisi!['resim']}",
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
                               ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              surucuBilgisi!['arac'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[700],
+                              SizedBox(height: 20),
+                              Text(
+                                "${surucuBilgisi!['ad']} ${surucuBilgisi!['soyad']}",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              surucuBilgisi!['plaka'],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                              SizedBox(height: 10),
+                              Text(
+                                surucuBilgisi!['arac'],
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey[700],
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                              Text(
+                                surucuBilgisi!['plaka'],
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 30),
-                    // Çağır butonu
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow[700],
-                        foregroundColor: Colors.black,
-                        minimumSize: Size(double.infinity, 50),
-                      ),
-                      onPressed: () {
-                        // Taksi çağırma işlemi
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("${surucuBilgisi!['ad']} çağrıldı!"),
-                            backgroundColor: Colors.green,
+                      SizedBox(height: 30),
+                      //fiyat bilgisi
+                      Card(
+                        elevation: 5,
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey[700]!),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                        );
-                      },
-                      child: Text(
-                        "TAKSİ ÇAĞIR",
-                        style: TextStyle(fontSize: 18),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Fiyat Bilgisi",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "Başlangıç Ücreti: ${surucuBilgisi!['ucret']} TL",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                "KM Başı Ücret: ${surucuBilgisi!['ucret'] / 2} TL",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                      // Çağır butonu
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow[700],
+                          foregroundColor: Colors.black,
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        onPressed: () {
+                          onPressed:
+                          () {
+                            // Seçilen sürücünün bilgilerini anasayfaya geri gönder
+                            Navigator.pop(context, surucuBilgisi);
+                          };
+                        },
+                        child: Text(
+                          "TAKSİ ÇAĞIR",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
     );

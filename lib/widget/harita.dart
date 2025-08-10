@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:uber_yeni/page/surucu_detay.dart';
 
 class Harita extends StatefulWidget {
-  const Harita({super.key});
+  final Function(Map<String, dynamic>)? onTaksiCagir;
+  const Harita({super.key, this.onTaksiCagir});
 
   @override
   State<Harita> createState() => _HaritaState();
@@ -83,9 +83,8 @@ class _HaritaState extends State<Harita> {
           icon: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueYellow,
           ),
-          onTap: () {
-            // Sürücü detay sayfasına git
-            Navigator.push(
+          onTap: () async {
+            var secilenSurucu = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder:
@@ -93,6 +92,10 @@ class _HaritaState extends State<Harita> {
                         SurucuDetay(surucuId: taksiKonumlari[i]['surucuId']),
               ),
             );
+            if (secilenSurucu != null) {}
+            if (secilenSurucu != null && widget.onTaksiCagir != null) {
+              widget.onTaksiCagir!(secilenSurucu); // Anasayfa'ya ilet
+            }
           },
           infoWindow: InfoWindow(
             title: taksiKonumlari[i]['title'],
